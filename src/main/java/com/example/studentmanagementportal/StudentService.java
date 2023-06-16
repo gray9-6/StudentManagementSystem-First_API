@@ -31,7 +31,7 @@ public class StudentService {
         return studentRepository.updateStudentCourse(admissionNo,course);
     }
 
-    public String updateStudentSemester(int admissionNo, String semester) {
+    public String updateStudentSemester(int admissionNo, int semester) {
         return  studentRepository.updateStudentSemester(admissionNo,semester);
     }
 
@@ -51,7 +51,15 @@ public class StudentService {
         return  studentRepository.getAllUniqueCourses();
     }
 
-    public String updateStudentInfo(int admissionNo, int option, String course, String semester) {
+    public String updateStudentInfo(int admissionNo, int option, String course, int semester) {
         return studentRepository.updateStudentInfo(admissionNo,option,course,semester);
+    }
+
+    public List<Student> getStudentInfoByCourse(String course) {
+        return  studentRepository.getStudentInfoByCourse(course);
+    }
+
+    public List<Student> getStudentInfoBySemester(int semester) {
+        return studentRepository.getStudentInfoBySemester(semester);
     }
 }

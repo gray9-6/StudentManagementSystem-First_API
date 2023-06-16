@@ -4,14 +4,15 @@ public class Student {
     private String name;
     private int admissionNo;
     private int age;
-    private String Semester;
+    private int Semester;
     private String course;
+
 
     // Constructor
     public Student() {
     }
 
-    public Student(String name, int admissionNo, int age, String semester, String course) {
+    public Student(String name, int admissionNo, int age, int semester, String course) {
         this.name = name;
         this.admissionNo = admissionNo;
         this.age = age;
@@ -52,11 +53,11 @@ public class Student {
         this.course = course;
     }
 
-    public String getSemester() {
+    public int getSemester() {
         return Semester;
     }
 
-    public void setSemester(String semester) {
+    public void setSemester(int semester) {
         Semester = semester;
     }
 
@@ -67,6 +68,7 @@ public class Student {
                 ", name='" + name + '\'' +
                 ", age=" + age +
                 ", course='" + course + '\'' +
+                ", semester='" + Semester + '\'' +
                 '}';
     }
 }

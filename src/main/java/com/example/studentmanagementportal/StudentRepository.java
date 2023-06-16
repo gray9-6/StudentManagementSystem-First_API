@@ -51,13 +51,13 @@ public class StudentRepository {
         return null;
     }
 
-    public String updateStudentSemester(int admissionNo, String semester) {
+    public String updateStudentSemester(int admissionNo,int semester) {
         // check karo kya wo student enrolled hai ya nahi
         if(studentMap.containsKey(admissionNo)){
             // uss roll no. ke base pe student ka object bana lo jisme uski saari info hogi
             Student s = studentMap.get(admissionNo);
-            String oldSem = s.getSemester();
-            if(oldSem.equals(semester)){
+            int oldSem = s.getSemester();
+            if(oldSem == semester){
                 return "Please choose different course. Student is already enrolled for this course";
             } else{
                 // uska semester set kar do
@@ -110,7 +110,7 @@ public class StudentRepository {
         return map;
     }
 
-    public String updateStudentInfo(int admissionNo, int option, String course, String semester) {
+    public String updateStudentInfo(int admissionNo, int option, String course, int semester) {
         // Check if the student exists
         if (studentMap.containsKey(admissionNo)) {
             // Get the student object
@@ -127,7 +127,7 @@ public class StudentRepository {
 
 
                 case 2:
-                    if (semester == null) {
+                    if (semester == 0) {
                         return "Semester parameter is required for option 2";
                     }
                     s.setSemester(semester);
@@ -139,5 +139,25 @@ public class StudentRepository {
         }
 
         return "Admission No. " + admissionNo + " not found";
+    }
+
+    public List<Student> getStudentInfoByCourse(String course) {
+        List<Student> studentList = new ArrayList<>();
+        for (Student s : studentMap.values()){
+            if(s.getCourse().equals(course)){
+                studentList.add(s);
+            }
+        }
+        return studentList;
+    }
+
+    public List<Student> getStudentInfoBySemester(int semester) {
+        List<Student> studentList = new ArrayList<>();
+        for (Student s : studentMap.values()){
+            if(s.getSemester() == semester){
+                studentList.add(s);
+            }
+        }
+        return studentList;
     }
 }

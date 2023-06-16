@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -59,7 +60,7 @@ public class StudentController {
     }
 
     @PutMapping("/updateSemester")
-    public ResponseEntity updateStudentSemester(@RequestParam("id") int admissionNo,@RequestParam("semester") String semester){
+    public ResponseEntity updateStudentSemester(@RequestParam("id") int admissionNo,@RequestParam("semester") int semester){
          String s = studentService.updateStudentSemester(admissionNo,semester);
          if(s != null){
              return  new ResponseEntity(s,HttpStatus.OK);
@@ -108,7 +109,26 @@ public class StudentController {
         return  new ResponseEntity(list,HttpStatus.FOUND);
     }
 
+    // Get Student Info By Course
+    @GetMapping("/getStudentBy_Course")
+    public ResponseEntity getStudentInfoByCourse(@RequestParam("course") String course){
+         List<Student> list =  studentService.getStudentInfoByCourse(course);
+         if(list.isEmpty()){
+             return  new ResponseEntity("No student found in this course",HttpStatus.NOT_FOUND);
+         }
+         return  new ResponseEntity(list,HttpStatus.FOUND);
+    }
 
+
+    // Get Student Info By Semester
+    @GetMapping("/getStudentBy_Semester/{semester}")
+    public ResponseEntity getStudentInfoBySemester(@PathVariable("semester") int semester){
+        List<Student> list = studentService.getStudentInfoBySemester(semester);
+        if(list.isEmpty()){
+            return new ResponseEntity("No Student found in this Semester" ,HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity(list,HttpStatus.FOUND);
+    }
 
 
     @PutMapping("/updateStudentRecord/{id}/{option}")
@@ -116,7 +136,7 @@ public class StudentController {
             @PathVariable("id") int admissionNo,
             @PathVariable("option") int option,
             @PathVariable(value = "course", required = false) String course,
-            @PathVariable(value = "semester", required = false) String semester
+            @PathVariable(value = "semester", required = false) int semester
     ) {
         return  studentService.updateStudentInfo(admissionNo,option,course,semester);
     }
