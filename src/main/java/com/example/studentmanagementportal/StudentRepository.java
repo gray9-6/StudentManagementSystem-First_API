@@ -32,7 +32,7 @@ public class StudentRepository {
             studentMap.put(student.getAdmissionNo(),student);
             return " Student Added Successfully." + "Total students are :- " + this.count;
         }
-        return student.getAdmissionNo() + " is already enrolled in this class";
+        return null;
     }
 
     public String updateStudentCourse(int admissionNo, String course) {
@@ -40,10 +40,15 @@ public class StudentRepository {
         if(studentMap.containsKey(admissionNo)){
             // uss roll no. ke base pe student ka object bana lo jisme uski saari info hogi
             Student s = studentMap.get(admissionNo);
-            s.setCourse(course);
-            return s.getName() + " course changed to " + s.getCourse();
+            String oldCourse = s.getCourse();
+            if(oldCourse.equals(course)){
+                return "Please choose different course. Student is already enrolled for this course";
+            } else{
+                s.setCourse(course);
+            }
+            return s.getName() + " course changed from " + oldCourse +  " to " + s.getCourse();
         }
-        return "Admission No. " + admissionNo + " not found";
+        return null;
     }
 
     public String updateStudentSemester(int admissionNo, String semester) {
@@ -51,20 +56,25 @@ public class StudentRepository {
         if(studentMap.containsKey(admissionNo)){
             // uss roll no. ke base pe student ka object bana lo jisme uski saari info hogi
             Student s = studentMap.get(admissionNo);
-            // uska semester set kar do
-            s.setSemester(semester);
+            String oldSem = s.getSemester();
+            if(oldSem.equals(semester)){
+                return "Please choose different course. Student is already enrolled for this course";
+            } else{
+                // uska semester set kar do
+                s.setSemester(semester);
+            }
             return s.getName() + " semester  changed to " + s.getSemester();
         }
-        return "Admission No. " + admissionNo + " does not exist";
+        return null;
     }
 
     public String deleteRecord(int admissionNo) {
         if(studentMap.containsKey(admissionNo)){
             this.count--;
             studentMap.remove(admissionNo);
-            return " Student record deleted successfully." + "Remaining Students are :- " + this.count  ;
+            return "Student record deleted successfully." + "Remaining Students are :- " + this.count  ;
         }
-        return "Admission No. " + admissionNo + " does not exist";
+        return null;
     }
 
     public String getStudentNumberByAge(int age) {

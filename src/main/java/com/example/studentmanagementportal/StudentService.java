@@ -17,6 +17,9 @@ public class StudentService {
 
     public String getStudentByPathVariable(int admissionNo, String message) {
         Student s =  studentRepository.getStudentByPathVariable(admissionNo);
+        if( s == null){
+            return  "Student not found";
+        }
         return  message + " " + s;
     }
 

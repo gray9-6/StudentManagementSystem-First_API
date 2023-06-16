@@ -2,6 +2,8 @@ package com.example.studentmanagementportal;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -9,53 +11,72 @@ import java.util.Set;
 
 @RestController
 public class StudentController {
-
-
     @Autowired
     StudentService studentService;
 
 
     // get the student , GET API
-
     // /get_info?id=type you admission id here, for which student you want to get the record
     @GetMapping("/get_info")
-    public Student getStudent(@RequestParam("id") int admissionNo){
-        return studentService.getStudent(admissionNo);
+    public ResponseEntity getStudent(@RequestParam("id") int admissionNo){
+        Student s = studentService.getStudent(admissionNo);
+        if(s != null){
+            return new ResponseEntity(s, HttpStatus.ACCEPTED);
+        }
+        return new ResponseEntity<>("Student Not found",HttpStatus.NOT_FOUND);
     }
 
     // /get/type you admission id here, for which student you want to get the record
     @GetMapping("/get/{id}/{message}")
-    public String getStudentByPathVariable(@PathVariable("id") int admissionNo, @PathVariable("message") String message){
-        return studentService.getStudentByPathVariable(admissionNo,message);
+    public ResponseEntity getStudentByPathVariable(@PathVariable("id") int admissionNo, @PathVariable("message") String message){
+        String s = studentService.getStudentByPathVariable(admissionNo,message);
+        return new ResponseEntity(s,HttpStatus.ACCEPTED);
+
     }
 
 
     // Adding the Students, POST API
     // /add
     @PostMapping("/add")
-    public String addStudent(@RequestBody Student student){
-        return studentService.addStudent(student);
+    public ResponseEntity addStudent(@RequestBody Student student){
+        String s = studentService.addStudent(student);
+        if(s != null){
+            return new ResponseEntity<>(s,HttpStatus.CREATED);
+        }
+        return  new ResponseEntity("Already enrolled",HttpStatus.BAD_REQUEST);
     }
 
 
     // update
     // /update/type the student whose course you want to update
     @PutMapping("/updateCourse/{id}/{course}")
-    public String updateStudentCourse(@PathVariable("id") int admissionNo,@PathVariable("course") String course){
-        return studentService.updateStudentCourse(admissionNo,course);
+    public ResponseEntity updateStudentCourse(@PathVariable("id") int admissionNo,@PathVariable("course") String course){
+        String s =  studentService.updateStudentCourse(admissionNo,course);
+        if(s != null){
+            return  new ResponseEntity(s,HttpStatus.OK);
+        }
+        return  new ResponseEntity("Admission No. " + admissionNo + " not found",HttpStatus.FORBIDDEN);
     }
 
     @PutMapping("/updateSemester")
-    public String updateStudentSemester(@RequestParam("id") int admissionNo,@RequestParam("semester") String semester){
-         return  studentService.updateStudentSemester(admissionNo,semester);
+    public ResponseEntity updateStudentSemester(@RequestParam("id") int admissionNo,@RequestParam("semester") String semester){
+         String s = studentService.updateStudentSemester(admissionNo,semester);
+         if(s != null){
+             return  new ResponseEntity(s,HttpStatus.OK);
+         }
+         return  new ResponseEntity("Admission No. " + admissionNo + " not found",HttpStatus.FORBIDDEN);
     }
 
 
     //delete
     // /delete/student admission no.
     @DeleteMapping("/delete/{id}")
-    public String deleteRecord(@PathVariable("id") int admissionNo){
-      return studentService.deleteRecord(admissionNo);
+    public ResponseEntity deleteRecord(@PathVariable("id") int admissionNo){
+      String s = studentService.deleteRecord(admissionNo);
+      if(s != null){
+            return new ResponseEntity<>(s,HttpStatus.ACCEPTED);
+        }
+      return new ResponseEntity("Student not found",HttpStatus.NOT_FOUND);
     }
 
 
@@ -68,16 +89,27 @@ public class StudentController {
 
     // Get All the courses
     @GetMapping("/course")
-    public List<String> getAllCourses(){
-         return studentService.getAllCourses();
+    public ResponseEntity getAllCourses(){
+        List<String> list  = studentService.getAllCourses();
+        if(list.isEmpty()){
+            return  new ResponseEntity("NO Record Found",HttpStatus.NOT_FOUND);
+        }
+        return  new ResponseEntity(list,HttpStatus.FOUND);
     }
 
 
     // Get All the unique courses
     @GetMapping("/uniqueCourse")
-    public Set<String> getAllUniqueCourses(){
-        return studentService.getAllUniqueCourses();
+    public ResponseEntity getAllUniqueCourses(){
+        Set<String> list = studentService.getAllUniqueCourses();
+        if(list.isEmpty()){
+            return  new ResponseEntity("NO Record Found",HttpStatus.NOT_FOUND);
+        }
+        return  new ResponseEntity(list,HttpStatus.FOUND);
     }
+
+
+
 
     @PutMapping("/updateStudentRecord/{id}/{option}")
     public String updateStudentInfo(
