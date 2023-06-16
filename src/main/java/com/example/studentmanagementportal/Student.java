@@ -7,7 +7,6 @@ public class Student {
     private String Semester;
     private String course;
 
-
     // Constructor
     public Student() {
     }

@@ -89,5 +89,4 @@ public class StudentController {
         return  studentService.updateStudentInfo(admissionNo,option,course,semester);
     }
 
-
 }

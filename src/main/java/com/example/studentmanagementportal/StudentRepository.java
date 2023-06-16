@@ -6,7 +6,6 @@ import java.util.*;
 
 @Repository
 public class StudentRepository {
-
     Map<Integer,Student> studentMap = new HashMap<>();
     static int count = 0;
 

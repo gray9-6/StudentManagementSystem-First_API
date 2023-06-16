@@ -8,7 +8,6 @@ import java.util.Set;
 
 @Service
 public class StudentService {
-
     @Autowired
     StudentRepository studentRepository;
     public Student getStudent(int admissionNo) {
