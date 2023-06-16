@@ -4,6 +4,7 @@ public class Student {
     private String name;
     private int admissionNo;
     private int age;
+    private String Semester;
     private String course;
 
 
@@ -11,10 +12,11 @@ public class Student {
     public Student() {
     }
 
-    public Student(String name, int admissionNo, int age, String course) {
+    public Student(String name, int admissionNo, int age, String semester, String course) {
         this.name = name;
         this.admissionNo = admissionNo;
         this.age = age;
+        Semester = semester;
         this.course = course;
     }
 
@@ -51,6 +53,13 @@ public class Student {
         this.course = course;
     }
 
+    public String getSemester() {
+        return Semester;
+    }
+
+    public void setSemester(String semester) {
+        Semester = semester;
+    }
 
     @Override
     public String toString() {
